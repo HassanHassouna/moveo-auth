@@ -53,25 +53,29 @@ const HomePage = () => {
       {loading && <div className="loader"></div>}
 
       {user && (
-        <div>
-          <h1>{user.name}</h1>
+        <div className="container">
+          <div className="back-img">
+            <div className="layer"></div>
+          </div>
+          <h1>Welcome Back {user.name}</h1>
           <h2>{user.email}</h2>
           <h3>{user.birth_date}</h3>
           <h4>{user.address}</h4>
+
+          {showUpdateForm && <EditUser user={user} setUser={setUser} />}
+          {err}
+          <p>
+            <button onClick={() => auth.signOut()}>Sign out</button>
+            <button
+              onClick={() =>
+                showUpdateForm ? editUser() : setShowUpdateForm(true)
+              }
+            >
+              {showUpdateForm ? "save" : "edit"}
+            </button>
+          </p>
         </div>
       )}
-      {showUpdateForm && <EditUser user={user} setUser={setUser} />}
-      {err}
-      <p>
-        <button onClick={() => auth.signOut()}>Sign out</button>
-        <button
-          onClick={() =>
-            showUpdateForm ? editUser() : setShowUpdateForm(true)
-          }
-        >
-          {showUpdateForm ? "save" : "edit"}
-        </button>
-      </p>
     </div>
   )
 }

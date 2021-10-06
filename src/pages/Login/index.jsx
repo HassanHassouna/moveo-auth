@@ -9,8 +9,16 @@ const Login = () => {
   const [password, setPassword] = useState("")
 
   const validate = (email, password) => {
+    if (!email || !password) {
+      setError("Something went wrong,Please try again.")
+      return true
+    }
     if (password.length < 6) {
       setError("The password is less than 6 characters.")
+      return true
+    }
+    if (!email.includes("@")) {
+      setError("Invalid Email,Please try again.")
       return true
     }
   }
