@@ -16,7 +16,7 @@ const HomePage = () => {
   // function that can change info for the user.
   function editUser() {
     const { name, address, birth_date } = user
-    //checking that the user fill all the fields
+    //checking that the user has filled all the fields
     if (!name || !address || !birth_date) {
       setErr("Something went wrong,Please try again.")
       return
@@ -37,7 +37,7 @@ const HomePage = () => {
       birth_date: updatedData.birth_date,
     })
   }
-  // fetching the info's curr user from firebase.
+  // fetching the current user's info from firestore.
   async function fetchUsers() {
     setLoading(true)
     const q = query(
@@ -72,7 +72,6 @@ const HomePage = () => {
           {err}
           <p>
             <button className="editSave" onClick={() => auth.signOut()}>
-              {" "}
               <Button variant="outlined" startIcon={<ExitToAppIcon />}>
                 Sign Out
               </Button>

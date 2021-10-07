@@ -16,8 +16,11 @@ const Login = () => {
       setError("Something went wrong,Please try again.")
       return true
     }
-    if (password.length < 6) {
-      setError("The password is less than 6 characters.")
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/
+    if (!password.match(regex)) {
+      setError(
+        "The password is less than 6 characters or dosent conatin letters and numbers."
+      )
       return true
     }
     if (!email.includes("@")) {
