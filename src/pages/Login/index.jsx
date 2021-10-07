@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../../firebase/firebase"
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd"
+import Button from "@mui/material/Button"
 
 const Login = () => {
   const [error, setError] = useState("")
@@ -8,6 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
+  //checking some validations.
   const validate = (email, password) => {
     if (!email || !password) {
       setError("Something went wrong,Please try again.")
@@ -22,21 +25,19 @@ const Login = () => {
       return true
     }
   }
-  const signIn = (e) => {
+  const signIn = () => {
     setLoading(true)
     if (validate(email, password)) {
       setLoading(false)
       return
     }
     signInWithEmailAndPassword(auth, email, password)
-      .then((user) => {
-        console.log(user)
+      .then(() => {
         setLoading(false)
       })
       .catch((err) => {
         setError(err.message)
         setLoading(false)
-        console.log(err)
       })
   }
   return (
@@ -69,7 +70,11 @@ const Login = () => {
         </form>
 
         <p>{error}</p>
-        <button onClick={signIn}>Sign in </button>
+        <button className="editSave" onClick={signIn}>
+          <Button variant="contained" endIcon={<AssignmentIndIcon />}>
+            Sign In
+          </Button>
+        </button>
       </div>
       {loading && <div className="loader"></div>}
     </div>

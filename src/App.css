@@ -27,7 +27,7 @@
 .App-link {
   color: #61dafb;
 }
-/* login page */
+/* login & home page */
 .container {
   position: relative;
   height: 106vh;
@@ -76,6 +76,11 @@ input {
   margin: auto;
   margin-top: 20px;
   animation: spin 1s linear infinite;
+}
+.editSave {
+  outline: none;
+  border: none;
+  background-color: transparent;
 }
 
 @keyframes spin {
