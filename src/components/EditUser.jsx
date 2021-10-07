@@ -1,7 +1,7 @@
 import React from "react"
 
 function EditUser({ user, setUser }) {
- 
+  // handling the input, update it in each field accordenly
   const handleInputChange = (e) => {
     setUser({
       ...user,
@@ -11,7 +11,7 @@ function EditUser({ user, setUser }) {
   return (
     <div className="editUser_container">
       <form className="form" action="">
-        <label className="name" htmlFor="">
+        <label className="name">
           <input
             onChange={handleInputChange}
             name="name"
@@ -21,7 +21,7 @@ function EditUser({ user, setUser }) {
             required
           />
         </label>
-        <label className="address" htmlFor="">
+        <label className="address">
           <input
             onChange={handleInputChange}
             value={user.address}
@@ -31,7 +31,7 @@ function EditUser({ user, setUser }) {
             required
           />
         </label>
-        <label className="birth_date" htmlFor="">
+        <label className="birth_date">
           <input
             onChange={handleInputChange}
             value={user.birth_date}

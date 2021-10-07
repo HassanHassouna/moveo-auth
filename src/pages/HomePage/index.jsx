@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import { auth, db } from "../../firebase/firebase"
-import { collection, getDocs, query, where } from "firebase/firestore"
-import { doc, updateDoc } from "firebase/firestore"
+import { auth } from "../../firebase/firebase"
+import { ref, set, child, getDatabase, get } from "firebase/database"
+
 import EditUser from "../../components/EditUser"
 import SendIcon from "@mui/icons-material/Send"
 import Button from "@mui/material/Button"
@@ -29,9 +29,10 @@ const HomePage = () => {
   }
 
   async function updateUser(updatedData) {
-    // fetch the db from firestore and update it with the form's inputs.
-    const userUpdate = doc(db, "users", user.id)
-    await updateDoc(userUpdate, {
+    // fetch the db from firebase and update it with the form's inputs.
+    const userUpdateRef = ref(getDatabase(), `users/${user.id}`)
+    await set(userUpdateRef, {
+      ...user,
       name: updatedData.name,
       address: updatedData.address,
       birth_date: updatedData.birth_date,
@@ -40,15 +41,15 @@ const HomePage = () => {
   // fetching the current user's info from firestore.
   async function fetchUsers() {
     setLoading(true)
-    const q = query(
-      collection(db, "users"),
-      where("email", "==", auth.currentUser.email)
-    )
-    const querySnapshot = await getDocs(q)
-    console.log(querySnapshot)
+    const dbRef = ref(getDatabase())
+    const querySnapshot = await get(child(dbRef, "users"))
     querySnapshot.forEach((doc) => {
       setLoading(false)
-      setUser({ ...doc.data(), id: doc.id })
+      const userData = doc.val()
+
+      if (userData.email === auth.currentUser.email) {
+        setUser({ ...doc.val(), id: doc.key })
+      }
     })
   }
   React.useEffect(() => fetchUsers(), [])
@@ -71,27 +72,30 @@ const HomePage = () => {
           {showUpdateForm && <EditUser user={user} setUser={setUser} />}
           {err}
           <p>
-            <button className="editSave" onClick={() => auth.signOut()}>
-              <Button variant="outlined" startIcon={<ExitToAppIcon />}>
-                Sign Out
-              </Button>
-            </button>
-            <button
-              className="editSave"
-              onClick={() =>
-                showUpdateForm ? editUser() : setShowUpdateForm(true)
-              }
+            <Button
+              onClick={() => auth.signOut()}
+              variant="outlined"
+              startIcon={<ExitToAppIcon />}
             >
-              {showUpdateForm ? (
-                <Button variant="contained" endIcon={<SendIcon />}>
-                  Save
-                </Button>
-              ) : (
-                <Button variant="outlined" startIcon={<EditIcon />}>
-                  Edit
-                </Button>
-              )}
-            </button>
+              Sign Out
+            </Button>
+            {showUpdateForm ? (
+              <Button
+                onClick={() => editUser()}
+                variant="contained"
+                endIcon={<SendIcon />}
+              >
+                Save
+              </Button>
+            ) : (
+              <Button
+                onClick={() => setShowUpdateForm(true)}
+                variant="outlined"
+                startIcon={<EditIcon />}
+              >
+                Edit
+              </Button>
+            )}
           </p>
         </div>
       )}

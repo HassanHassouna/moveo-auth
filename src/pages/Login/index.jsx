@@ -51,7 +51,7 @@ const Login = () => {
       <h1>Login</h1>
       <div>
         <form className="form" action="">
-          <label className="username" htmlFor="">
+          <label className="username">
             <input
               placeholder="Email"
               onChange={({ target }) => setEmail(target.value)}
@@ -61,7 +61,7 @@ const Login = () => {
             />
           </label>
 
-          <label className="password" htmlFor="">
+          <label className="password">
             <input
               placeholder="Password"
               onChange={({ target }) => setPassword(target.value)}
@@ -71,13 +71,15 @@ const Login = () => {
             />
           </label>
         </form>
-
+        {/* showing the error */}
         <p>{error}</p>
-        <button className="editSave" onClick={signIn}>
-          <Button variant="contained" endIcon={<AssignmentIndIcon />}>
-            Sign In
-          </Button>
-        </button>
+        <Button
+          onClick={signIn}
+          variant="contained"
+          endIcon={<AssignmentIndIcon />}
+        >
+          Sign In
+        </Button>
       </div>
       {loading && <div className="loader"></div>}
     </div>
